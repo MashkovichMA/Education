@@ -1,0 +1,36 @@
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.mashkovich.education.dao.IChairDao">
+	<resultMap type = "Chair" id = "ChairResultMap">
+	<id property = "id" column = "chair_id"/>
+	<result property = "name" column = "chair_name"/>
+	<result property = "email" column = "chair_email"/>
+	<result property = "phone" column = "chair_phone"/>
+	<association property="faculty" resultMap = "com.mashkovich.education.dao.IFacultyDao.FacultyResultMap"/>
+	</resultMap>
+	<select id = "getByID" parameterType ="int" resultMap = "ChairResultMap">
+		select 
+		ch.id as chair_id,
+		ch.name as chair_name,
+		ch.email as chair_email,
+		ch.phone as chair_phone,
+		fa.id as faculty_id,
+		fa.name as faculty_name,
+		fa.email as faculty_email,
+		fa.phone as faculty_phone,
+		u.id as university_id,
+		u.name as university_name,
+		ad.id as address_id,
+		ad.street as street,
+		ad.house as house,
+		ci.id as citi_id,
+		ci.city as city,
+		c.id as country_id,
+		c.country as country
+		from Chairs ch inner join Faculties fa on ch.Faculties_id=fa.id
+		inner join Universities u on fa.Universities_id=u.id
+		inner join Addresses ad on u.Addresses_id=ad.id
+		inner join Cities ci on ad.Cities_id=ci.id  
+		inner join Countries c on ci.Countries_id=c.id
+		WHERE ch.id = #{id}
+	</select>	
+</mapper>

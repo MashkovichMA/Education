@@ -1,0 +1,25 @@
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.mashkovich.education.dao.ICityDao">
+	<resultMap type = "City" id = "CityResultMap">
+	<id property = "id" column = "citi_id"/>
+	<result property = "city" column = "city"/>
+	<association property="country" resultMap = "com.mashkovich.education.dao.ICountryDao.CountryResultMap"/>
+	</resultMap>
+	<select id = "getByID" parameterType ="int" resultMap = "CityResultMap">
+		select 
+		ci.id as citi_id,
+		ci.city as city,
+		c.id as country_id,
+		c.country as country
+		from Cities ci inner join Countries c on ci.Countries_id=c.id WHERE ci.id = #{id}
+	</select>
+	<insert id = "save" parameterType ="City" useGeneratedKeys = "true" keyProperty = "id">
+	insert into Cities ('country') values (#{Country.country})
+	</insert>
+	<delete id = "delete" parameterType ="int">
+	delete from Countries WHERE id=#{id}
+	</delete>
+	<update id = "update" parameterType ="City">
+	update City set city = #{city.city}
+	</update>			
+</mapper>

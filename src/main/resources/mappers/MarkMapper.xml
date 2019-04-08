@@ -1,0 +1,48 @@
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.mashkovich.education.dao.IMarkDao">
+	<resultMap type = "Mark" id = "MarkResultMap">
+	<id property = "id" column = "mark_id"/>
+	<id property = "mark" column = "mark_name"/>
+	<association property="lecture" resultMap = "com.mashkovich.education.dao.ILectureDao.LectureResultMap"/>
+	</resultMap>
+	<select id = "getByID" parameterType ="int" resultMap = "MarkResultMap">
+		select 
+		ma.id as mark_id,
+		ma.id as mark_name,
+		le.id as lecture_id,
+		di.id as id,
+		di.name as name,
+		pr.id as professor_id,
+		pr.name as professor_name,
+		pr.second_name as professor_second_name,
+		pr.gender as professor_gender,
+		pr.name as professor_phone,
+		ch.id as chair_id,
+		ch.name as chair_name,
+		ch.email as chair_email,
+		ch.phone as chair_phone,
+		fa.id as faculty_id,
+		fa.name as faculty_name,
+		fa.email as faculty_email,
+		fa.phone as faculty_phone,
+		u.id as university_id,
+		u.name as university_name,
+		ad.id as address_id,
+		ad.street as street,
+		ad.house as house,
+		ci.id as citi_id,
+		ci.city as city,
+		c.id as country_id,
+		c.country as country
+		from Marks ma inner join Lectures le on ma.Professors_id=le.id
+		inner join Professors pr on le.Professors_id=pr.id
+		inner join Disciplines di on le.Disciplines_id=di.id
+		inner join Chairs ch on pr.Chairs_id=ch.id
+		inner join Faculties fa on ch.Faculties_id=fa.id
+		inner join Universities u on fa.Universities_id=u.id
+		inner join Addresses ad on u.Addresses_id=ad.id
+		inner join Cities ci on ad.Cities_id=ci.id  
+		inner join Countries c on ci.Countries_id=c.id
+		WHERE ma.id = #{id}
+	</select>	
+</mapper>

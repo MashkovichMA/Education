@@ -1,0 +1,22 @@
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.mashkovich.education.dao.IAddressDao">
+	<resultMap type = "Address" id = "AddressResultMap">
+	<id property = "id" column = "address_id"/>
+	<result property = "street" column = "street"/>
+	<result property = "house" column = "house"/>
+	<association property="city" resultMap = "com.mashkovich.education.dao.ICityDao.CityResultMap"/>
+	</resultMap>
+	<select id = "getByID" parameterType ="int" resultMap = "AddressResultMap">
+		select
+		ad.id as address_id,
+		ad.street as street,
+		ad.house as house,
+		ci.id as citi_id,
+		ci.city as city,
+		c.id as country_id,
+		c.country as country
+		from Addresses ad inner join Cities ci on ad.Cities_id=ci.id 
+		inner join Countries c on ci.Countries_id=c.id
+		WHERE ad.id = #{id}
+	</select>	
+</mapper>

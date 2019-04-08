@@ -1,0 +1,31 @@
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.mashkovich.education.dao.IFacultyDao">
+	<resultMap type = "Faculty" id = "FacultyResultMap">
+	<id property = "id" column = "faculty_id"/>
+	<result property = "name" column = "faculty_name"/>
+	<result property = "email" column = "faculty_email"/>
+	<result property = "phone" column = "faculty_phone"/>
+	<association property="university" resultMap = "com.mashkovich.education.dao.IUniversityDao.UniversityResultMap"/>
+	</resultMap>
+	<select id = "getByID" parameterType ="int" resultMap = "FacultyResultMap">
+		select 
+		fa.id as faculty_id,
+		fa.name as faculty_name,
+		fa.email as faculty_email,
+		fa.phone as faculty_phone,
+		u.id as university_id,
+		u.name as university_name,
+		ad.id as address_id,
+		ad.street as street,
+		ad.house as house,
+		ci.id as citi_id,
+		ci.city as city,
+		c.id as country_id,
+		c.country as country
+		from Faculties fa inner join Universities u on fa.Universities_id=u.id
+		inner join Addresses ad on u.Addresses_id=ad.id
+		inner join Cities ci on ad.Cities_id=ci.id  
+		inner join Countries c on ci.Countries_id=c.id
+		WHERE fa.id = #{id}
+	</select>	
+</mapper>
